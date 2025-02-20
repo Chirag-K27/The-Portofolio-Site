@@ -99,18 +99,130 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Project Popup Functionality
+document.addEventListener("DOMContentLoaded", function () {
+  // Get all project cards
+  const projectCards = document.querySelectorAll(".project-card");
 
-function expandProject(element) {
-  document.getElementById("project-title").innerText = element.getAttribute("data-title");
-  document.getElementById("project-company").innerText = element.getAttribute("data-company");
-  document.getElementById("project-date").innerText = element.getAttribute("data-date");
-  document.getElementById("project-desc").innerText = element.getAttribute("data-desc");
-  document.getElementById("project-tech").innerText = element.getAttribute("data-tech");
-  document.getElementById("project-role").innerText = element.getAttribute("data-role");
+  // Add click event to each card
+  projectCards.forEach((card) => {
+    card.addEventListener("click", function () {
+      const projectId = this.getAttribute("data-project");
+      const popup = document.getElementById(`${projectId}-popup`);
 
-  document.getElementById("project-detail").classList.add("active");
-}
+      if (popup) {
+        popup.style.display = "flex";
+        document.body.style.overflow = "hidden"; // Prevent scrolling while popup is open
+      }
+    });
+  });
 
-function closeProject() {
-  document.getElementById("project-detail").classList.remove("active");
+  // Close popup when close button is clicked
+  const closeButtons = document.querySelectorAll(".close-popup");
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const popup = this.closest(".project-popup-overlay");
+      popup.style.display = "none";
+      document.body.style.overflow = "auto"; // Re-enable scrolling
+    });
+  });
+
+  // Close popup when clicking outside the content
+  const popups = document.querySelectorAll(".project-popup-overlay");
+  popups.forEach((popup) => {
+    popup.addEventListener("click", function (e) {
+      if (e.target === this) {
+        popup.style.display = "none";
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+      }
+    });
+  });
+
+  // Close popup when Escape key is pressed
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      const openPopup = document.querySelector(
+        '.project-popup-overlay[style="display: flex;"]'
+      );
+      if (openPopup) {
+        openPopup.style.display = "none";
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+      }
+    }
+  });
+});
+
+// Enhanced popup handling to properly disable scrolling
+const openPopup = (popup) => {
+  // Store current scroll position
+  const scrollY = window.scrollY;
+
+  // Apply fixed position to body at current scroll position
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = "100%";
+  document.body.style.overflow = "hidden";
+
+  // Show popup
+  popup.style.display = "flex";
 };
+
+const closePopup = (popup) => {
+  // Get the body's top position
+  const scrollY = document.body.style.top;
+
+  // Reset body position
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
+  document.body.style.overflow = "auto";
+
+  // Restore scroll position
+  window.scrollTo(0, parseInt(scrollY || "0") * -1);
+
+  // Hide popup
+  popup.style.display = "none";
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const projectCards = document.querySelectorAll(".project-card");
+  const popups = document.querySelectorAll(".project-popup-overlay");
+  const closeButtons = document.querySelectorAll(".close-popup");
+
+  projectCards.forEach((card) => {
+    card.addEventListener("click", function () {
+      const projectId = this.getAttribute("data-project");
+      const popup = document.getElementById(`${projectId}-popup`);
+
+      if (popup) {
+        openPopup(popup);
+      }
+    });
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const popup = this.closest(".project-popup-overlay");
+      closePopup(popup);
+    });
+  });
+
+  popups.forEach((popup) => {
+    popup.addEventListener("click", function (e) {
+      if (e.target === this) {
+        closePopup(popup);
+      }
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      const openPopup = document.querySelector(
+        ".project-popup-overlay[style='display: flex;']"
+      );
+      if (openPopup) {
+        closePopup(openPopup);
+      }
+    }
+  });
+});
