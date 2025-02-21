@@ -8,8 +8,6 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 
-
-
 app.listen(PORT, () => {
   console.log(`Server running on Port ${PORT}`);
 });
@@ -75,21 +73,20 @@ app.post("/contact", async (req, res) => {
   }
 });
 
+// app.post("/track-visitor", (req, res) => {
+//   const ip =
+//     req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
-app.post("/track-visitor", (req, res) => {
-  const ip =
-    req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+//   const userAgent = req.headers["user-agent"] || "unknown";
 
-  const userAgent = req.headers["user-agent"] || "unknown";
+//   const referrer =
+//     req.headers["referer"] || req.headers["referrer"] || "Direct Visit";
 
-  const referrer =
-    req.headers["referer"] || req.headers["referrer"] || "Direct Visit";
+//   const sql =
+//     "INSERT INTO visitors (ip_address, user_agent, referrer) VALUES (?, ?, ?)";
+//   connection.query(sql, [ip, userAgent, referrer], (err) => {
+//     if (err) console.error("DB Error Storing Visitor Details: " + err);
+//   });
 
-  const sql =
-    "INSERT INTO visitors (ip_address, user_agent, referrer) VALUES (?, ?, ?)";
-  connection.query(sql, [ip, userAgent, referrer], (err) => {
-    if (err) console.error("DB Error Storing Visitor Details: " + err);
-  });
-
-  res.status(200).end;
-});
+//   res.status(200).end;
+// });
