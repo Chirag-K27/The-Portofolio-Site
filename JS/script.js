@@ -54,7 +54,7 @@ window.onscroll = () => {
   );
 };
 
-const backendUrl = process.env.BACKEND_URL;
+const backendUrl = "http://13.203.194.252:3001";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("contact-form");
