@@ -135,7 +135,7 @@ app.post(
 
         const [result] = await connection.execute(
           "INSERT INTO contacts (username, email, mobile, message) VALUES (?, ?, ?, ?)",
-          [name, email, mobile, message]
+          [name, email, mobile, message]  
         );
 
         await transporter.sendMail(mailOptions);

@@ -54,18 +54,19 @@ window.onscroll = () => {
   );
 };
 
+const backendUrl = "http://13.203.194.252:3001";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("contact-form");
 
-  // Check if the response message element already exists
   let responseMessage = document.getElementById("response-message");
   if (!responseMessage) {
-    responseMessage = document.createElement("p"); // Create the message element
+    responseMessage = document.createElement("p");
     responseMessage.id = "response-message";
     responseMessage.style.textAlign = "center";
     responseMessage.style.marginTop = "10px";
     responseMessage.style.fontSize = "16px";
-    form.appendChild(responseMessage); // Append below the form
+    form.appendChild(responseMessage);
   }
 
   form.addEventListener("submit", async (event) => {
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = document.getElementById("message").value;
 
     try {
-      const response = await fetch("http://localhost:3001/contact", {
+      const response = await fetch(`${backendUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, mobile, message }),
